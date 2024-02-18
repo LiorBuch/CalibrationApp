@@ -1,5 +1,5 @@
 //import { invoke } from "@tauri-apps/api/tauri";
-import { AppShell, Burger, NavLink, Stack } from "@mantine/core";
+import { AppShell, Burger,NavLink, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import MainPage from "./components/MainPage";
 import {
@@ -16,13 +16,29 @@ import ReportGeneratorPage from "./components/ReportGeneratorPage";
 function App() {
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(false);
   const pages = [
-    { icon: IconHome, page: MainPage, label: "Main Page",pageId:"main_page_navlink" },
-    { icon: IconSettings2, page: SettingsPage, label: "Settings Page" ,pageId:"settings_page_navlink"},
-    { icon: IconTestPipe2, page: TestPage, label: "Testing Page" ,pageId:"test_page_navlink" },
+    {
+      icon: IconHome,
+      page: MainPage,
+      label: "Main Page",
+      pageId: "main_page_navlink",
+    },
+    {
+      icon: IconSettings2,
+      page: SettingsPage,
+      label: "Settings Page",
+      pageId: "settings_page_navlink",
+    },
+    {
+      icon: IconTestPipe2,
+      page: TestPage,
+      label: "Testing Page",
+      pageId: "test_page_navlink",
+    },
     {
       icon: IconReportAnalytics,
       page: ReportGeneratorPage,
-      label: "Report Page",pageId:"report_page_navlink"
+      label: "Report Page",
+      pageId: "report_page_navlink",
     },
   ];
   const [activePage, setPage] = useState(0);
@@ -64,10 +80,8 @@ function App() {
           />
         ))}
       </AppShell.Navbar>
-      <AppShell.Main id="app_shell_main">
-        <div style={focusStyle}>
-          <ActivePageComponent/>
-        </div>
+      <AppShell.Main id="app_shell_main" style={focusStyle}>
+        <ActivePageComponent />
       </AppShell.Main>
     </AppShell>
   );
