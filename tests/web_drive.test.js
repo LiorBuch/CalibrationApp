@@ -16,6 +16,7 @@ const application = path.resolve(
   'release',
   'calibrationapp'
 )
+const platform = os.platform()
 let driver
 let tauriDriver
 
@@ -30,10 +31,35 @@ before(async function () {
     { stdio: [null, process.stdout, process.stderr] }
   )
   // start the webdriver client
-  driver = await new Builder().forBrowser('MicrosoftEdge')
-    .withCapabilities(Capabilities.edge())
-    .usingServer('http://127.0.0.1:4444/')
-    .build()
+  console.log(`Using driver for platform -> ${platform}.`)
+  switch(platform){
+    case "darwin":{
+      driver = await new Builder().forBrowser('safari')
+      .withCapabilities(Capabilities.safari())
+      .usingServer('http://127.0.0.1:4444/')
+      .build()
+      break
+    }
+    case "win32":{
+      driver = await new Builder().forBrowser('MicrosoftEdge')
+      .withCapabilities(Capabilities.edge())
+      .usingServer('http://127.0.0.1:4444/')
+      .build()
+      break
+    }
+    case "linux":{
+      driver = await new Builder().forBrowser('firefox')
+      .withCapabilities(Capabilities.firefox())
+      .usingServer('http://127.0.0.1:4444/')
+      .build()
+      break
+    }
+    default:
+      driver = await new Builder().forBrowser('chrome')
+      .withCapabilities(Capabilities.chrome())
+      .usingServer('http://127.0.0.1:4444/')
+      .build()
+  }
   await driver.get('http://localhost:1420/')
 })
 after(async function () {
@@ -54,7 +80,7 @@ describe('Test App', () => {
       //test if the nav bar is findable, than 
       let burger = await driver.findElement(By.id('app_nav_burger'))
       let innerBurger = await burger.findElement(By.css("*"))
-      let openValue = await innerBurger.getAttribute("data-opened")    
+      let openValue = await innerBurger.getAttribute("data-opened")
       if(!openValue) {await burger.click()}
       await driver.manage().setTimeouts({ implicit: 2000 })
     })
@@ -81,7 +107,6 @@ describe('Test App', () => {
       await navlink.click()
       let page = await driver.findElement(By.id("main_page_id"))
       await driver.wait(until.elementIsVisible(page), 1000)
-  
     })
   })
 })

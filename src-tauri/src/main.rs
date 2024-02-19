@@ -13,3 +13,13 @@ fn main() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+
+#[tauri::command]
+fn callCPP(a: &i32 , b:&i32) -> i32 {
+    
+}
+
+#[tauri::command]
+fn callCSharp(a: &i32 , b:&i32) -> i32 {
+    
+}

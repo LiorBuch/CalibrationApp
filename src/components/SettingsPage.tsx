@@ -1,8 +1,18 @@
-function SettingsPage(){
-    return (
-      <div id="settings_page_id">
-        Settings
-      </div>
-    );
- }
- export default SettingsPage
+import { Card } from "@mantine/core";
+
+function SettingsPage() {
+  return (
+    <Card
+      m={"md"}
+      h={"90vh"}
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      id="settings_page_id"
+    >
+      Settings
+    </Card>
+  );
+}
+export default SettingsPage

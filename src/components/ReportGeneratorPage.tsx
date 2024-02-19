@@ -1,8 +1,18 @@
+import { Card } from "@mantine/core";
+
 function ReportGeneratorPage(){
     return (
-      <div id="reports_page_id">
-        Reports
-      </div>
+          <Card
+          m={"md"}
+          h={"90vh"}
+          shadow="sm"
+          padding="lg"
+          radius="md"
+          withBorder
+          id="reports_page_id"
+        >
+          Reports
+        </Card>
     );
  }
  export default ReportGeneratorPage

@@ -1,5 +1,5 @@
 //import { invoke } from "@tauri-apps/api/tauri";
-import { AppShell, Burger,NavLink, Stack } from "@mantine/core";
+import { AppShell, Burger, Group, NavLink, Stack ,Image } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import MainPage from "./components/MainPage";
 import {
@@ -10,8 +10,10 @@ import {
 } from "@tabler/icons-react";
 import SettingsPage from "./components/SettingsPage";
 import { useState } from "react";
+import { Text } from "@mantine/core";
 import TestPage from "./components/TestPage";
 import ReportGeneratorPage from "./components/ReportGeneratorPage";
+import appIcon from "./assets/sm_icon.png";
 
 function App() {
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(false);
@@ -19,25 +21,25 @@ function App() {
     {
       icon: IconHome,
       page: MainPage,
-      label: "Main Page",
+      label: "Home",
       pageId: "main_page_navlink",
     },
     {
       icon: IconSettings2,
       page: SettingsPage,
-      label: "Settings Page",
+      label: "Settings",
       pageId: "settings_page_navlink",
     },
     {
       icon: IconTestPipe2,
       page: TestPage,
-      label: "Testing Page",
+      label: "Testing",
       pageId: "test_page_navlink",
     },
     {
       icon: IconReportAnalytics,
       page: ReportGeneratorPage,
-      label: "Report Page",
+      label: "Report",
       pageId: "report_page_navlink",
     },
   ];
@@ -56,16 +58,25 @@ function App() {
       padding={"md"}
     >
       <AppShell.Header>
-        <Stack h="100%" px="md" justify="center">
+        <Group h="100%" px="md" gap={"lg"} justify="flex-start">
           <Burger
             opened={desktopOpened}
             onClick={toggleDesktop}
             size={"sm"}
             id="app_nav_burger"
           />
-        </Stack>
+          <Image src={appIcon}/>
+          <Stack gap={"xs"}>
+            <Text fw={500} size="lg">
+              ScanMaster
+            </Text>
+            <Text size="xs" fs={"italic"}>
+              Calibration App
+            </Text>
+          </Stack>
+        </Group>
       </AppShell.Header>
-      <AppShell.Navbar>
+      <AppShell.Navbar p={"sm"}>
         Navigation
         {pages.map((item, index) => (
           <NavLink
