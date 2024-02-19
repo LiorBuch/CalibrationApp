@@ -14,6 +14,7 @@ import { Text } from "@mantine/core";
 import TestPage from "./components/TestPage";
 import ReportGeneratorPage from "./components/ReportGeneratorPage";
 import appIcon from "./assets/sm_icon.png";
+import DevPage from "./components/DevPage";
 
 function App() {
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(false);
@@ -41,6 +42,12 @@ function App() {
       page: ReportGeneratorPage,
       label: "Report",
       pageId: "report_page_navlink",
+    },
+    {
+      icon: IconReportAnalytics,
+      page: DevPage,
+      label: "Dev",
+      pageId: "dev_page_navlink",
     },
   ];
   const [activePage, setPage] = useState(0);
