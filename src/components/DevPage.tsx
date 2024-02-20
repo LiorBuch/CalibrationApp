@@ -1,50 +1,87 @@
-import { Card, Stack, Group, Text, Space, Input, Button } from "@mantine/core";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { invoke } from '@tauri-apps/api/tauri'
+import {
+  Card,
+  Stack,
+  Group,
+  Text,
+  Space,
+  NumberInput,
+  Button,
+} from "@mantine/core";
+import { FormEvent, useState } from "react";
+import { invoke } from "@tauri-apps/api";
 
 function DevPage() {
-    const [result, setResult] = useState("0")
-    const [data, setData] = useState({
-        numA: 0,
-        numB: 0,
-    });
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        invoke("call_cpp",{a:data.numA,b:data.numB}).then((msg)=>{console.log(msg)})
-    };
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setData(prevFormData => ({
-            ...prevFormData,
-            [name]: value,
-        }));
-    };
-    return (
-        <Card
-            m={"md"}
-            h={"90vh"}
-            shadow="sm"
-            padding="lg"
-            radius="md"
-            withBorder
-            id="dev_page_id"
-        >
-            <Stack>
-                <Text fw={750}>POC C++ Invoker</Text>
-                <Group>
-                    <form onSubmit={handleSubmit}>
-                        <Input placeholder="Input A" onChange={handleChange} />
-                        <Input placeholder="Input B" onChange={handleChange} />
-                        <Text>{result}</Text>
-                        <Button type="submit">Calculate</Button>
-                    </form>
-                </Group>
-                <Space />
-                <Text fw={750}>POC C# Invoker</Text>
-                <Group>
-                </Group>
-            </Stack>
-        </Card>
-    );
+  const [resultCpp, setResultCpp] = useState(0);
+  const [resultCS, setResultCS] = useState(0.0);
+  const [numA, setNumA] = useState<string | number>(0);
+  const [numB, setNumB] = useState<string | number>(0);
+  const [numC, setNumC] = useState<string | number>(0);
+  const [numD, setNumD] = useState<string | number>(0);
+  const handleSubmitCpp = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    invoke<number>("call_cpp", { a: numA, b: numB })
+      .then((message) => {
+        setResultCpp(message);
+      })
+      .catch((reason) => console.log(`error ${reason}`));
+  };
+  const handleSubmitCS = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    invoke("call_cs", { a: numC, b: numD })
+      .then((message) => {
+        setResultCS(-1);
+        console.log(message)
+      })
+      .catch((reason) => console.log(`error ${reason}`));
+  };
+  return (
+    <Card
+      m={"md"}
+      h={"90vh"}
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      id="dev_page_id"
+    >
+      <Stack>
+        <Text fw={750}>POC C++ Invoker</Text>
+        <Group>
+          <form onSubmit={handleSubmitCpp}>
+            <NumberInput
+              placeholder="Input A"
+              value={numA}
+              onChange={setNumA}
+            />
+            <NumberInput
+              placeholder="Input B"
+              value={numB}
+              onChange={setNumB}
+            />
+            <Text>{resultCpp}</Text>
+            <Button type="submit">Calculate</Button>
+          </form>
+        </Group>
+        <Space />
+        <Text fw={750}>POC C# Invoker</Text>
+        <Group>
+          <form onSubmit={handleSubmitCS}>
+            <NumberInput
+              placeholder="Input C"
+              value={numA}
+              onChange={setNumC}
+            />
+            <NumberInput
+              placeholder="Input D"
+              value={numB}
+              onChange={setNumD}
+            />
+            <Text>{resultCS}</Text>
+            <Button type="submit">Calculate</Button>
+          </form>
+        </Group>
+      </Stack>
+    </Card>
+  );
 }
 export default DevPage;
